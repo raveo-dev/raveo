@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Turbo
+.turbo/
+
+# Build outputs
+.next/
+.open-next/
+dist/
+
+# Env files
+.env
+.env.local
+.env.production
+
+# Cloudflare
+.wrangler/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.cursor/
+*.suo
+*.user
