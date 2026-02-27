@@ -1,0 +1,8 @@
+{
+    "name": "raveo-web",
+    "compatibility_date": "2026-02-27",
+    "compatibility_flags": ["nodejs_compat"],
+    "assets": {
+        "directory": "./dist",
+    },
+}
