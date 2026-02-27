@@ -2,16 +2,30 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**", ".open-next/**", "dist/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**",
+        ".open-next/**",
+        "dist/**"
+      ]
     },
     "dev": {
       "persistent": true,
       "cache": false
     },
     "deploy": {
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "cache": false
+    },
+    "generate:types": {
+      "cache": false,
+      "outputs": [
+        "packages/types/src/**"
+      ]
     }
   }
 }
