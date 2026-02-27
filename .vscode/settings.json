@@ -4,6 +4,6 @@
   },
   "json.format.enable": true,
   "[jsonc]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
