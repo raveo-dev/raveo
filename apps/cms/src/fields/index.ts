@@ -1,0 +1,1 @@
+export { seoField } from './seo'
