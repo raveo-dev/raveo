@@ -1,8 +1,19 @@
 import { defineMiddleware } from "astro:middleware";
+import type { Fetcher } from "@cloudflare/workers-types";
 
-async function fetchGlobal(cmsUrl: string, slug: string) {
+async function fetchGlobal(
+    fetcher: Fetcher | null,
+    cmsUrl: string,
+    slug: string,
+) {
     try {
-        const res = await fetch(`${cmsUrl}/api/globals/${slug}?depth=1`);
+        const url = `https://cms/api/globals/${slug}?depth=1`;
+        const fallbackUrl = `${cmsUrl}/api/globals/${slug}?depth=1`;
+
+        const res = fetcher
+            ? await fetcher.fetch(url as Parameters<Fetcher["fetch"]>[0])
+            : await fetch(fallbackUrl);
+
         if (!res.ok) return null;
         return await res.json();
     } catch {
@@ -11,15 +22,24 @@ async function fetchGlobal(cmsUrl: string, slug: string) {
 }
 
 export const onRequest = defineMiddleware(async ({ locals }, next) => {
+    let cmsBinding: Fetcher | null = null;
+
+    try {
+        const { env } = await import("cloudflare:workers");
+        cmsBinding = (env as unknown as { CMS: Fetcher }).CMS ?? null;
+    } catch {
+        // Dev environment — cloudflare:workers module not available
+    }
+
     const cmsUrl = import.meta.env.CMS_URL;
 
     const [navigation, siteSettings] = await Promise.all([
-        fetchGlobal(cmsUrl, "navigation"),
-        fetchGlobal(cmsUrl, "site-settings"),
+        fetchGlobal(cmsBinding, cmsUrl, "navigation"),
+        fetchGlobal(cmsBinding, cmsUrl, "site-settings"),
     ]);
 
-    locals.navigation = navigation;
-    locals.siteSettings = siteSettings;
+    locals.navigation = navigation as App.Locals["navigation"];
+    locals.siteSettings = siteSettings as App.Locals["siteSettings"];
 
     return next();
 });

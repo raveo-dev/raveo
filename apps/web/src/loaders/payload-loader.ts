@@ -90,10 +90,15 @@ export function payloadPagesLoader(config: {
                 if (!res.ok) throw new Error(`CMS fetch failed: ${res.status}`);
                 const data = await res.json();
                 return {
-                    entries: data.docs.map((doc: PayloadPage) => ({
-                        id: doc.id,
-                        data: doc,
-                    })),
+                    entries: data.docs.map((doc: PayloadPage) => {
+                        if (
+                            doc.hero?.image?.url &&
+                            !doc.hero.image.url.startsWith("http")
+                        ) {
+                            doc.hero.image.url = `${config.cmsUrl}${doc.hero.image.url}`;
+                        }
+                        return { id: doc.id, data: doc };
+                    }),
                 };
             } catch (error) {
                 return { error: error as Error };
