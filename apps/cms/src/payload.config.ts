@@ -20,6 +20,7 @@ const dirname = path.dirname(filename)
 const realpath = (value: string) => (fs.existsSync(value) ? fs.realpathSync(value) : undefined)
 
 const isCLI = process.argv.some((value) => realpath(value).endsWith(path.join('payload', 'bin.js')))
+const isSeed = process.argv.some((value) => value.includes('seed.ts'))
 const isProduction = process.env.NODE_ENV === 'production'
 
 const createLog =
@@ -74,6 +75,7 @@ export default buildConfig({
   },
   db: sqliteD1Adapter({
     binding: cloudflare.env.D1,
+    push: !isSeed,
   }),
   logger: isProduction ? cloudflareLogger : undefined,
   plugins: [
