@@ -34,7 +34,7 @@ const sortedPosts = posts?.sort((a, b) => {
           )}
           {post.data.publishedDate && (
             <time class="text-sm text-gray-400 mt-2 block">
-              {new Date(post.data.publishedDate).toLocaleDateString('cs-CZ')}
+              {new Date(post.data.publishedDate).toLocaleDateString()}
             </time>
           )}
         </a>

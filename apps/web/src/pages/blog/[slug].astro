@@ -22,7 +22,7 @@ if (!post) {
       )}
       <div class="flex gap-4 text-sm text-gray-400">
         {post.data.publishedDate && (
-          <time>{new Date(post.data.publishedDate).toLocaleDateString('cs-CZ')}</time>
+          <time>{new Date(post.data.publishedDate).toLocaleDateString()}</time>
         )}
         {post.data.categories?.length > 0 && (
           <span>{post.data.categories.map((c: any) => c.name).join(', ')}</span>
