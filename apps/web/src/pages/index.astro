@@ -1,9 +1,7 @@
 ---
-import { getLiveCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 
-const { entries } = await getLiveCollection("pages");
-const homePage = entries?.find((e) => e.data.slug === "home")?.data ?? null;
+const homePage = Astro.locals.pages.find((p) => p.slug === "home") ?? null;
 
 const hero = homePage?.hero ?? null;
 const seoTitle = homePage?.seo?.title ?? homePage?.title ?? "Raveo";
