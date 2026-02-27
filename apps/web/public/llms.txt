@@ -1,0 +1,25 @@
+# Raveo
+
+> Cloudflare-native open-core CMS platform combining PayloadCMS with edge computing infrastructure.
+
+## About
+
+Raveo is a modern web platform built on Cloudflare Workers, PayloadCMS, and Astro. It provides a headless CMS with edge-deployed frontend, enabling fast, AI-discoverable websites.
+
+## Technology
+
+- Runtime: Cloudflare Workers (V8 isolate, 200+ locations)
+- CMS: PayloadCMS 3.x (headless, TypeScript-native)
+- Frontend: Astro v6 (Cloudflare-native)
+- Database: Cloudflare D1 (serverless SQLite)
+- Storage: Cloudflare R2 (S3-compatible)
+- Cache: Cloudflare KV (sub-ms edge reads)
+
+## Content
+
+- Blog: /blog
+- Sitemap: /sitemap.xml
+
+## Contact
+
+- Website: https://YOUR_DOMAIN
