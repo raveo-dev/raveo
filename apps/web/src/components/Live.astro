@@ -1,0 +1,14 @@
+---
+import { getLiveCollection } from 'astro:content';
+
+const { entries, error } = await getLiveCollection('posts');
+console.log('entries:', JSON.stringify(entries, null, 2));
+console.log('error:', error);
+
+---
+
+<h1>Raveo Web</h1>
+{error && <p>Error: {error.message}</p>}
+{entries && <ul>
+  {entries.map(post => <li>{post.data.title}</li>)}
+</ul>}
