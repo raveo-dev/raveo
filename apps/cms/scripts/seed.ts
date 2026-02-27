@@ -20,6 +20,7 @@ async function seed() {
       data: {
         email: 'admin@example.com',
         password: 'password',
+        role: 'admin',
       },
     })
     console.log('✅ Admin user created: admin@example.com / password')

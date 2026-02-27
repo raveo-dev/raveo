@@ -1,9 +1,13 @@
-import type { CollectionConfig } from 'payload';
+import type { CollectionConfig } from 'payload'
+import { isAdmin, isAdminOrEditor } from '../access'
 
 export const Media: CollectionConfig = {
   slug: 'media',
   access: {
     read: () => true,
+    create: isAdminOrEditor,
+    update: isAdminOrEditor,
+    delete: isAdmin,
   },
   fields: [
     {
@@ -13,8 +17,7 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    // These are not supported on Workers yet due to lack of sharp
     crop: false,
     focalPoint: false,
   },
-};
+}

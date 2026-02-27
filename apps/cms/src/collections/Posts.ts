@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { seoField } from '../fields'
+import { isAdmin, isAdminOrEditor } from '../access'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -17,15 +18,11 @@ export const Posts: CollectionConfig = {
   access: {
     read: ({ req: { user } }) => {
       if (user) return true
-      return {
-        status: {
-          equals: 'published',
-        },
-      }
+      return { status: { equals: 'published' } }
     },
-    create: ({ req: { user } }) => Boolean(user),
-    update: ({ req: { user } }) => Boolean(user),
-    delete: ({ req: { user } }) => Boolean(user),
+    create: isAdminOrEditor,
+    update: isAdminOrEditor,
+    delete: isAdmin,
   },
   fields: [
     {
