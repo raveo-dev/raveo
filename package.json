@@ -7,10 +7,13 @@
     "dev": "turbo dev",
     "build": "turbo build",
     "deploy": "turbo deploy",
+    "deploy:cms": "turbo deploy --filter @raveo/cms",
+    "deploy:web": "turbo deploy --filter @raveo/web",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
-    "generate:types": "turbo generate:types"
+    "generate:types": "turbo generate:types",
+    "typecheck": "turbo typecheck"
   },
   "engines": {
     "node": ">=20",

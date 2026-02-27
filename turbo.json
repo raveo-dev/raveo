@@ -21,11 +21,20 @@
       ],
       "cache": false
     },
+    "deploy:database": {
+      "cache": false
+    },
     "generate:types": {
       "cache": false,
       "outputs": [
         "packages/types/src/**"
       ]
+    },
+    "typecheck": {
+      "dependsOn": [
+        "^build"
+      ],
+      "cache": false
     }
   }
 }
