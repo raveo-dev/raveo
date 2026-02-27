@@ -65,38 +65,14 @@ wrangler kv namespace create CACHE
 
 ### 3. Configure wrangler.jsonc
 
-Update `apps/cms/wrangler.jsonc` with your resource IDs:
+Copy the example configs and fill in your resource IDs:
 
-```jsonc
-{
-  "d1_databases": [
-    {
-      "binding": "D1",
-      "database_name": "raveo-cms",
-      "database_id": "YOUR_D1_DATABASE_ID"
-    }
-  ],
-  "r2_buckets": [
-    {
-      "binding": "R2",
-      "bucket_name": "raveo-cms-r2"
-    }
-  ]
-}
+```bash
+cp apps/cms/wrangler.example.jsonc apps/cms/wrangler.jsonc
+cp apps/web/wrangler.example.jsonc apps/web/wrangler.jsonc
 ```
 
-Update `apps/web/wrangler.jsonc` with your KV namespace ID:
-
-```jsonc
-{
-  "kv_namespaces": [
-    {
-      "binding": "CACHE",
-      "id": "YOUR_KV_NAMESPACE_ID"
-    }
-  ]
-}
-```
+Then update the placeholder values in both files with your actual Cloudflare resource IDs from step 2.
 
 ### 4. Set up environment variables
 
