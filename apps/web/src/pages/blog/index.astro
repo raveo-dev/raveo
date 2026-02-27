@@ -1,0 +1,48 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getLiveCollection } from 'astro:content';
+
+const { entries: posts, error } = await getLiveCollection('posts');
+
+if (error) {
+  console.error('Failed to load posts:', error);
+}
+
+const sortedPosts = posts?.sort((a, b) => {
+  const dateA = new Date(a.data.publishedDate ?? a.data.createdAt).getTime();
+  const dateB = new Date(b.data.publishedDate ?? b.data.createdAt).getTime();
+  return dateB - dateA;
+}) ?? [];
+---
+
+<Layout title="Blog">
+  <h1 class="text-4xl font-bold mb-8">Blog</h1>
+
+  {error && (
+    <p class="text-red-500">Failed to load posts.</p>
+  )}
+
+  <ul class="space-y-8">
+    {sortedPosts.map(post => (
+      <li class="border-b border-gray-200 pb-8">
+        <a href={`/blog/${post.data.slug}`} class="group">
+          <h2 class="text-2xl font-semibold group-hover:text-blue-600 transition-colors">
+            {post.data.title}
+          </h2>
+          {post.data.excerpt && (
+            <p class="text-gray-600 mt-2">{post.data.excerpt}</p>
+          )}
+          {post.data.publishedDate && (
+            <time class="text-sm text-gray-400 mt-2 block">
+              {new Date(post.data.publishedDate).toLocaleDateString('cs-CZ')}
+            </time>
+          )}
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  {sortedPosts.length === 0 && !error && (
+    <p class="text-gray-500">Zatím žádné příspěvky.</p>
+  )}
+</Layout>
