@@ -5,10 +5,11 @@ interface Props {
   title: string;
   description?: string;
   noIndex?: boolean;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
   
 }
 
-const { title, description, noIndex } = Astro.props;
+const { title, description, noIndex, schema } = Astro.props;
 const { navigation, siteSettings } = Astro.locals;
 
 
@@ -25,6 +26,9 @@ const siteDescription = description ?? siteSettings?.siteDescription ?? '';
     <meta name="description" content={siteDescription} />
     <title>{title} — {siteName}</title>
     {noIndex && <meta name="robots" content="noindex, nofollow" />}
+    {schema && (
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+)}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body class="min-h-screen bg-white text-gray-900 antialiased">

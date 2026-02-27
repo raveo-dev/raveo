@@ -2,13 +2,23 @@
 import Layout from "../layouts/Layout.astro";
 
 const homePage = Astro.locals.pages.find((p) => p.slug === "home") ?? null;
+const { siteSettings } = Astro.locals;
 
 const hero = homePage?.hero ?? null;
 const seoTitle = homePage?.seo?.title ?? homePage?.title ?? "Raveo";
 const seoDescription = homePage?.seo?.description ?? "";
+const baseUrl = Astro.site?.toString().replace(/\/$/, '') ?? '';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: siteSettings?.siteName ?? 'Raveo',
+  description: seoDescription,
+  url: baseUrl,
+};
 ---
 
-<Layout title={seoTitle} description={seoDescription}>
+<Layout title={seoTitle} description={seoDescription} schema={schema}>
   {hero ? (
     <section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-black">
       {hero.image?.url && (

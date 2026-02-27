@@ -1,14 +1,30 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 
+const { siteSettings } = Astro.locals;
+const baseUrl = Astro.site?.toString().replace(/\/$/, '') ?? '';
+
 const sortedPosts = [...Astro.locals.posts].sort((a, b) => {
   const dateA = new Date(a.publishedDate ?? '').getTime();
   const dateB = new Date(b.publishedDate ?? '').getTime();
   return dateB - dateA;
 });
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: `Blog — ${siteSettings?.siteName ?? 'Raveo'}`,
+  url: `${baseUrl}/blog`,
+  blogPost: sortedPosts.slice(0, 10).map(post => ({
+    '@type': 'BlogPosting',
+    headline: post.title,
+    url: `${baseUrl}/blog/${post.slug}`,
+    datePublished: post.publishedDate ?? '',
+  })),
+};
 ---
 
-<Layout title="Blog">
+<Layout title="Blog" schema={schema}>
   <h1 class="text-4xl font-bold mb-8">Blog</h1>
 
   <ul class="space-y-8">
