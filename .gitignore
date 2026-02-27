@@ -16,13 +16,16 @@ dist/
 
 # Cloudflare
 .wrangler/
+wrangler.jsonc
 
 # OS
 .DS_Store
 Thumbs.db
 
 # Editors
-.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
 .cursor/
 *.suo
 *.user

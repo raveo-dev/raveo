@@ -1,0 +1,9 @@
+{
+  "files.associations": {
+    "*.jsonc": "jsonc"
+  },
+  "json.format.enable": true,
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  }
+}

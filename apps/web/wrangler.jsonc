@@ -1,8 +1,23 @@
 {
+    "$schema": "node_modules/wrangler/config-schema.json",
     "name": "raveo-web",
     "compatibility_date": "2026-02-27",
-    "compatibility_flags": ["nodejs_compat"],
+    "compatibility_flags": [
+        "nodejs_compat"
+    ],
     "assets": {
         "directory": "./dist",
     },
+    "kv_namespaces": [
+        {
+            "binding": "CACHE",
+            "id": "46095bb6f4114653bc28d1af8a31854e",
+        },
+    ],
+    "services": [
+        {
+            "binding": "CMS",
+            "service": "raveo-cms",
+        },
+    ],
 }

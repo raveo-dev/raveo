@@ -1,0 +1,15 @@
+{
+    "name": "raveo-web",
+    "kv_namespaces": [
+        {
+            "binding": "CACHE",
+            "id": "YOUR_KV_NAMESPACE_ID",
+        },
+    ],
+    "services": [
+        {
+            "binding": "CMS",
+            "service": "raveo-cms",
+        },
+    ],
+}
