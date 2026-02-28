@@ -136,6 +136,9 @@ importers:
       '@raveo/config':
         specifier: workspace:*
         version: link:../../packages/config
+      wrangler:
+        specifier: ^4.69.0
+        version: 4.69.0(@cloudflare/workers-types@4.20260305.0)
 
   packages/config: {}
 
