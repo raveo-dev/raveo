@@ -32,7 +32,8 @@ jobs:
               run: pnpm install --frozen-lockfile
 
             - name: Build & Deploy
-              run: pnpm --filter @raveo/cms exec opennextjs-cloudflare build && pnpm --filter @raveo/cms exec opennextjs-cloudflare deploy
+              working-directory: apps/cms
+              run: pnpm exec opennextjs-cloudflare build && pnpm exec opennextjs-cloudflare deploy
               env:
                   CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
                   CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
