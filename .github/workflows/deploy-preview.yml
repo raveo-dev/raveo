@@ -59,25 +59,18 @@ jobs:
                   D1_DATABASE_ID: ${{ secrets.D1_DATABASE_ID }}
                   R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
 
-            - name: Generate Web wrangler.jsonc
+            - name: Generate Web wrangler.jsonc (for astro build)
               working-directory: apps/web
               run: |
                   node -e "
                   const config = {
                     '\$schema': 'node_modules/wrangler/config-schema.json',
-                    name: 'raveo-web',
+                    name: 'raveo-web-preview',
                     compatibility_date: '2026-02-27',
                     compatibility_flags: ['nodejs_compat'],
                     assets: { directory: './dist' },
                     kv_namespaces: [{ binding: 'CACHE', id: process.env.KV_NAMESPACE_ID }],
-                    services: [{ binding: 'CMS', service: 'raveo-cms' }],
-                    env: {
-                      preview: {
-                        name: 'raveo-web-preview',
-                        kv_namespaces: [{ binding: 'CACHE', id: process.env.KV_NAMESPACE_ID }],
-                        services: [{ binding: 'CMS', service: 'raveo-cms-preview' }],
-                      }
-                    }
+                    services: [{ binding: 'CMS', service: 'raveo-cms-preview' }],
                   };
                   require('fs').writeFileSync('wrangler.jsonc', JSON.stringify(config, null, 2));
                   "
@@ -100,9 +93,31 @@ jobs:
                   CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
                   CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
-            - name: Build & Deploy Web (preview)
+            - name: Build Web (preview)
               working-directory: apps/web
-              run: pnpm exec astro build && pnpm exec wrangler deploy --env preview
+              run: pnpm exec astro build
+
+            - name: Regenerate Web wrangler.jsonc (after astro build)
+              working-directory: apps/web
+              run: |
+                  node -e "
+                  const config = {
+                    '\$schema': 'node_modules/wrangler/config-schema.json',
+                    name: 'raveo-web-preview',
+                    compatibility_date: '2026-02-27',
+                    compatibility_flags: ['nodejs_compat'],
+                    assets: { directory: './dist' },
+                    kv_namespaces: [{ binding: 'CACHE', id: process.env.KV_NAMESPACE_ID }],
+                    services: [{ binding: 'CMS', service: 'raveo-cms-preview' }],
+                  };
+                  require('fs').writeFileSync('wrangler.jsonc', JSON.stringify(config, null, 2));
+                  "
+              env:
+                  KV_NAMESPACE_ID: ${{ secrets.KV_NAMESPACE_ID }}
+
+            - name: Deploy Web (preview)
+              working-directory: apps/web
+              run: pnpm exec wrangler deploy
               env:
                   CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
                   CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
