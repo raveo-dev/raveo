@@ -21,6 +21,9 @@
       ],
       "cache": false
     },
+    "deploy:preview": {
+      "cache": false
+    },
     "deploy:database": {
       "cache": false
     },

@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "typecheck": "astro check",
-    "deploy": "astro build && wrangler deploy"
+    "deploy": "astro build && wrangler deploy",
+    "deploy:preview": "astro build && wrangler deploy --env preview"
   },
   "dependencies": {
     "@astrojs/cloudflare": "13.0.0-beta.11",
