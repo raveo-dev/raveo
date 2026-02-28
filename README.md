@@ -43,7 +43,7 @@ Web Worker (Astro v6)
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/krystoffrancl/raveo.git
+git clone https://github.com/raveo-dev/raveo.git
 cd raveo
 pnpm install
 ```
