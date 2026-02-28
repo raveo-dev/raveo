@@ -30,6 +30,84 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
+            - name: Generate CMS wrangler.jsonc
+              working-directory: apps/cms
+              run: |
+                  cat > wrangler.jsonc << 'JSONC'
+                  {
+                    "$schema": "node_modules/wrangler/config-schema.json",
+                    "main": ".open-next/worker.js",
+                    "name": "raveo-cms",
+                    "compatibility_date": "2025-08-15",
+                    "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+                    "assets": {
+                      "directory": ".open-next/assets",
+                      "binding": "ASSETS"
+                    },
+                    "d1_databases": [
+                      {
+                        "binding": "D1",
+                        "database_id": "D1_DATABASE_ID_PLACEHOLDER",
+                        "database_name": "raveo-cms",
+                        "remote": true
+                      }
+                    ],
+                    "services": [],
+                    "r2_buckets": [
+                      {
+                        "binding": "R2",
+                        "bucket_name": "R2_BUCKET_PLACEHOLDER"
+                      }
+                    ],
+                    "env": {
+                      "preview": {
+                        "name": "raveo-cms-preview"
+                      }
+                    }
+                  }
+                  JSONC
+                  sed -i "s/D1_DATABASE_ID_PLACEHOLDER/${{ secrets.D1_DATABASE_ID }}/" wrangler.jsonc
+                  sed -i "s/R2_BUCKET_PLACEHOLDER/${{ secrets.R2_BUCKET_NAME }}/" wrangler.jsonc
+
+            - name: Generate Web wrangler.jsonc
+              working-directory: apps/web
+              run: |
+                  cat > wrangler.jsonc << 'JSONC'
+                  {
+                    "$schema": "node_modules/wrangler/config-schema.json",
+                    "name": "raveo-web",
+                    "compatibility_date": "2026-02-27",
+                    "compatibility_flags": ["nodejs_compat"],
+                    "assets": {
+                      "directory": "./dist"
+                    },
+                    "kv_namespaces": [
+                      {
+                        "binding": "CACHE",
+                        "id": "KV_NAMESPACE_ID_PLACEHOLDER"
+                      }
+                    ],
+                    "services": [
+                      {
+                        "binding": "CMS",
+                        "service": "raveo-cms"
+                      }
+                    ],
+                    "env": {
+                      "preview": {
+                        "name": "raveo-web-preview",
+                        "services": [
+                          {
+                            "binding": "CMS",
+                            "service": "raveo-cms-preview"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                  JSONC
+                  sed -i "s/KV_NAMESPACE_ID_PLACEHOLDER/${{ secrets.KV_NAMESPACE_ID }}/" wrangler.jsonc
+
             - name: Run CMS migrations (preview)
               run: pnpm --filter @raveo/cms payload migrate
               env:
