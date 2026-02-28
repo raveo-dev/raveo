@@ -33,7 +33,7 @@ jobs:
 
             - name: Build & Deploy
               working-directory: apps/cms
-              run: pnpm exec opennextjs-cloudflare build && pnpm exec opennextjs-cloudflare deploy
+              run: pnpm exec opennextjs-cloudflare build && pnpm exec opennextjs-cloudflare deploy --config wrangler.jsonc
               env:
                   CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
                   CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
