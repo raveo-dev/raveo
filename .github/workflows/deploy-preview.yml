@@ -42,13 +42,13 @@ jobs:
                     compatibility_flags: ['nodejs_compat', 'global_fetch_strictly_public'],
                     assets: { directory: '.open-next/assets', binding: 'ASSETS' },
                     d1_databases: [{ binding: 'D1', database_id: process.env.D1_DATABASE_ID, database_name: 'raveo-cms', remote: true }],
-                    services: [],
+                    services: [{ binding: 'WEB', service: 'raveo-web' }],
                     r2_buckets: [{ binding: 'R2', bucket_name: process.env.R2_BUCKET_NAME }],
                     env: {
                       preview: {
                         name: 'raveo-cms-preview',
                         d1_databases: [{ binding: 'D1', database_id: process.env.D1_DATABASE_ID, database_name: 'raveo-cms', remote: true }],
-                        services: [],
+                        services: [{ binding: 'WEB', service: 'raveo-web-preview' }],
                         r2_buckets: [{ binding: 'R2', bucket_name: process.env.R2_BUCKET_NAME }],
                       }
                     }
@@ -118,6 +118,23 @@ jobs:
             - name: Deploy Web (preview)
               working-directory: apps/web
               run: pnpm exec wrangler deploy
+              env:
+                  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+                  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+            - name: Set CMS secrets (preview)
+              working-directory: apps/cms
+              run: |
+                  echo "${{ secrets.PAYLOAD_SECRET }}" | pnpm exec wrangler secret put PAYLOAD_SECRET --env preview
+                  echo "${{ secrets.REVALIDATE_SECRET }}" | pnpm exec wrangler secret put REVALIDATE_SECRET --env preview
+              env:
+                  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+                  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+            - name: Set Web secrets (preview)
+              working-directory: apps/web
+              run: |
+                  echo "${{ secrets.REVALIDATE_SECRET }}" | pnpm exec wrangler secret put REVALIDATE_SECRET
               env:
                   CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
                   CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
