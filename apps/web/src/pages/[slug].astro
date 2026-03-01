@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import CmsImage from '../components/CmsImage.astro';
-import { renderLexical } from '../utils/lexical';
+import { renderLexical } from '@raveo/ui/richtext';
 
 const { slug } = Astro.params;
 
@@ -51,7 +51,7 @@ const noIndex = page.seo?.noIndex ?? false;
   )}
 
   <section class="py-12 px-6">
-    <div class="max-w-3xl mx-auto prose prose-gray max-w-none">
+    <div class="max-w-3xl mx-auto richtext">
       <Fragment set:html={renderLexical(page.content)} />
     </div>
   </section>

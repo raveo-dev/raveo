@@ -1,0 +1,36 @@
+---
+export interface Props {
+  as?: "div" | "article" | "section";
+  href?: string;
+  padded?: boolean;
+  bordered?: boolean;
+  hoverable?: boolean;
+  class?: string;
+}
+
+const {
+  as: Tag = "div",
+  href,
+  padded = true,
+  bordered = true,
+  hoverable = false,
+  class: className = "",
+} = Astro.props;
+
+const Wrapper = href ? "a" : Tag;
+
+const classes = [
+  "block rounded-(--radius-lg) bg-(--color-surface-raised) overflow-hidden",
+  bordered && "border border-(--color-border)",
+  hoverable && "transition-all duration-(--transition-base) hover:shadow-(--shadow-md) hover:border-(--color-border-hover)",
+  href && "no-underline text-inherit",
+  padded && "p-6",
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<Wrapper class={classes} {...(href ? { href } : {})}>
+  <slot />
+</Wrapper>

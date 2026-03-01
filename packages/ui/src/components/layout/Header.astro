@@ -1,0 +1,53 @@
+---
+export interface NavItem {
+  label: string;
+  href: string;
+  children?: NavItem[];
+}
+
+export interface Props {
+  siteName: string;
+  items?: NavItem[];
+  class?: string;
+}
+
+const { siteName, items = [], class: className = "" } = Astro.props;
+
+const classes = [
+  "border-b border-(--color-border) bg-(--color-background)",
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
+
+const navItems = items.map((item) => ({
+  label: item.label,
+  href: item.href,
+}));
+---
+
+<header class={classes}>
+  <nav class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+    <a
+      href="/"
+      class="font-bold text-xl text-foreground no-underline hover:opacity-80 transition-opacity duration-150"
+    >
+      {siteName}
+    </a>
+
+    <ul class="flex gap-6 list-none m-0 p-0">
+      {navItems.map(({ label, href }) => (
+        <li>
+          <a
+            href={href}
+            class="text-muted hover:text-foreground transition-colors duration-150 no-underline text-sm font-medium"
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <slot name="actions" />
+  </nav>
+</header>

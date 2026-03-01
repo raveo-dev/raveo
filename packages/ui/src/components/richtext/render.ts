@@ -1,4 +1,13 @@
-interface LexicalNode {
+/**
+ * Raveo — Lexical Rich Text Renderer
+ *
+ * Usage in Astro:
+ *   import { renderLexical } from '@raveo/ui/richtext';
+ *   const html = renderLexical(post.content);
+ *   <div class="prose" set:html={html} />
+ */
+
+export interface LexicalNode {
     type: string;
     children?: LexicalNode[];
     [k: string]: unknown;
@@ -9,14 +18,7 @@ export interface LexicalContent {
         type: string;
         children: LexicalNode[];
         direction: ("ltr" | "rtl") | null;
-        format:
-            | "left"
-            | "start"
-            | "center"
-            | "right"
-            | "end"
-            | "justify"
-            | "";
+        format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
         indent: number;
         version: number;
     };
@@ -82,9 +84,7 @@ function renderNode(node: LexicalNode): string {
             const tag = listType === "number" ? "ol" : "ul";
             const start = node.start as number | undefined;
             const startAttr =
-                tag === "ol" && start && start !== 1
-                    ? ` start="${start}"`
-                    : "";
+                tag === "ol" && start && start !== 1 ? ` start="${start}"` : "";
             return `<${tag}${startAttr}>${renderChildren(node.children)}</${tag}>`;
         }
 
@@ -94,7 +94,6 @@ function renderNode(node: LexicalNode): string {
                 const checkbox = `<input type="checkbox" disabled${checked ? " checked" : ""}>`;
                 return `<li role="checkbox" aria-checked="${checked}">${checkbox}${renderChildren(node.children)}</li>`;
             }
-            // Nested lists: if children contain a list node, render without wrapping
             if (
                 node.children?.length === 1 &&
                 node.children[0].type === "list"
@@ -111,7 +110,9 @@ function renderNode(node: LexicalNode): string {
                 ((fields?.url as string) ?? (node.url as string) ?? "").trim(),
             );
             const newTab =
-                (fields?.newTab as boolean) ?? (node.newTab as boolean) ?? false;
+                (fields?.newTab as boolean) ??
+                (node.newTab as boolean) ??
+                false;
             const rel = newTab ? ' rel="noopener noreferrer"' : "";
             const target = newTab ? ' target="_blank"' : "";
             return `<a href="${url}"${target}${rel}>${renderChildren(node.children)}</a>`;
@@ -133,16 +134,13 @@ function renderNode(node: LexicalNode): string {
         }
 
         default: {
-            // Unknown node — try to render children if any
-            const inner = renderChildren(node.children);
-            return inner;
+            return renderChildren(node.children);
         }
     }
 }
 
 /**
  * Renders Lexical JSON content to an HTML string.
- * Lightweight, zero-dependency renderer for Payload CMS Lexical editor output.
  */
 export function renderLexical(
     content: LexicalContent | null | undefined,

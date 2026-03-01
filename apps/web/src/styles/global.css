@@ -1,5 +1,6 @@
+@source "../../../../packages/ui/src/**/*.astro";
+@import "@raveo/ui/theme.css";
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
 
 @view-transition {
     navigation: auto;

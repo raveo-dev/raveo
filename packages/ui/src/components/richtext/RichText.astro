@@ -1,0 +1,25 @@
+---
+import type { LexicalContent } from "./render";
+import { renderLexical } from "./render";
+
+export interface Props {
+  content: LexicalContent | null | undefined;
+  class?: string;
+}
+
+const { content, class: className = "" } = Astro.props;
+const html = renderLexical(content);
+
+const classes = [
+  "richtext",
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+{html ? (
+  <div class={classes} set:html={html} />
+) : (
+  <slot />
+)}

@@ -1,0 +1,88 @@
+---
+export interface NavItem {
+  label: string;
+  href: string;
+  children?: NavItem[];
+}
+
+export interface Props {
+  items: NavItem[];
+  currentPath?: string;
+  direction?: "horizontal" | "vertical";
+  class?: string;
+}
+
+const {
+  items,
+  currentPath = "",
+  direction = "horizontal",
+  class: className = "",
+} = Astro.props;
+
+function isActive(href: string, current: string): boolean {
+  if (href === "/") return current === "/";
+  return current.startsWith(href);
+}
+
+const directionClasses: Record<string, string> = {
+  horizontal: "flex flex-row gap-6",
+  vertical: "flex flex-col gap-2",
+};
+
+const classes = [
+  "list-none m-0 p-0",
+  directionClasses[direction],
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
+
+const navItems = items.map((item) => ({
+  ...item,
+  active: isActive(item.href, currentPath),
+  children: item.children?.map((child) => ({
+    ...child,
+    active: isActive(child.href, currentPath),
+  })),
+}));
+---
+
+<ul class={classes}>
+  {navItems.map((item) => (
+    <li class="relative">
+      <a
+        href={item.href}
+        class:list={[
+          "no-underline text-sm font-medium transition-colors duration-(--transition-fast)",
+          item.active
+            ? "text-foreground"
+            : "text-muted hover:text-foreground",
+        ]}
+        aria-current={item.active ? "page" : undefined}
+      >
+        {item.label}
+      </a>
+
+      {item.children && item.children.length > 0 && (
+        <ul class="list-none m-0 p-0 pl-4 mt-1 flex flex-col gap-1">
+          {item.children.map((child) => (
+            <li>
+              <a
+                href={child.href}
+                class:list={[
+                  "no-underline text-sm transition-colors duration-150",
+                  child.active
+                    ? "text-foreground"
+                    : "text-muted hover:text-foreground",
+                ]}
+                aria-current={child.active ? "page" : undefined}
+              >
+                {child.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </li>
+  ))}
+</ul>

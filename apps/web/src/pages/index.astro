@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import CmsImage from "../components/CmsImage.astro";
-import { renderLexical } from "../utils/lexical";
+import { renderLexical } from "@raveo/ui/richtext";
 
 const homePage = Astro.locals.pages.find((p) => p.slug === "home") ?? null;
 const contentHtml = renderLexical(homePage?.content);

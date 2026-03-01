@@ -7,7 +7,7 @@ type ENV = {
 
 type Runtime = import("@astrojs/cloudflare").Runtime<ENV>;
 
-type LexicalContent = import("./utils/lexical").LexicalContent;
+type LexicalContent = import("@raveo/ui/richtext").LexicalContent;
 
 interface PayloadPage {
     id: string;
