@@ -16,7 +16,12 @@
       "remote": true,
     },
   ],
-  "services": [],
+  "services": [
+    {
+      "binding": "WEB",
+      "service": "my-raveo-web-worker",
+    },
+  ],
   "r2_buckets": [
     {
       "binding": "R2",

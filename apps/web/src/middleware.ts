@@ -41,7 +41,9 @@ async function cachedFetch(
 
     if (data && cache) {
         // Fire-and-forget — don't block the response
-        cache.put(path, JSON.stringify(data), { expirationTtl: 60 }).catch(() => {});
+        cache
+            .put(path, JSON.stringify(data), { expirationTtl: 300 })
+            .catch(() => {});
     }
 
     return data;
@@ -69,7 +71,12 @@ export const onRequest = defineMiddleware(async ({ locals }, next) => {
 
     const [navigation, siteSettings, pagesData, postsData] = await Promise.all([
         cachedFetch(fetcher, cmsUrl, "/api/globals/navigation?depth=1", cache),
-        cachedFetch(fetcher, cmsUrl, "/api/globals/site-settings?depth=1", cache),
+        cachedFetch(
+            fetcher,
+            cmsUrl,
+            "/api/globals/site-settings?depth=1",
+            cache,
+        ),
         cachedFetch(
             fetcher,
             cmsUrl,

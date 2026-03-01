@@ -6,6 +6,15 @@ export const SiteSettings: GlobalConfig = {
   admin: {
     group: 'Globals',
   },
+  hooks: {
+    afterChange: [
+      async ({ doc }) => {
+        const { revalidateGlobalAfterChange } = await import('../hooks/revalidate')
+        await revalidateGlobalAfterChange({ doc } as any)
+        return doc
+      },
+    ],
+  },
   access: {
     read: () => true,
     update: ({ req: { user } }) => Boolean(user),
