@@ -1,5 +1,7 @@
 ---
-import '../styles/global.css';
+import "../styles/global.css";
+import Header from "@raveo/ui/components/layout/Header.astro";
+import Footer from "@raveo/ui/components/layout/Footer.astro";
 
 interface Props {
   title: string;
@@ -7,17 +9,14 @@ interface Props {
   noIndex?: boolean;
   schema?: Record<string, unknown> | Record<string, unknown>[];
   canonical?: string;
-  
 }
 
 const { title, description, noIndex, schema, canonical } = Astro.props;
 const { navigation, siteSettings } = Astro.locals;
 
-
-const siteName = siteSettings?.siteName ?? 'Raveo';
-const siteDescription = description ?? siteSettings?.siteDescription ?? '';
+const siteName = siteSettings?.siteName ?? "Raveo";
+const siteDescription = description ?? siteSettings?.siteDescription ?? "";
 const canonicalUrl = canonical ?? Astro.url.href;
-
 ---
 
 <!doctype html>
@@ -30,32 +29,17 @@ const canonicalUrl = canonical ?? Astro.url.href;
     <link rel="canonical" href={canonicalUrl} />
     {noIndex && <meta name="robots" content="noindex, nofollow" />}
     {schema && (
-  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
-)}
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    )}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
-  <body class="min-h-screen bg-white text-gray-900 antialiased">
-    <header class="border-b border-gray-200">
-      <nav class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-        <a href="/" class="font-bold text-xl">{siteName}</a>
-        <ul class="flex gap-6">
-          {navigation?.items?.map(item => (
-            <li>
-              <a href={item.href} class="text-gray-600 hover:text-gray-900 transition-colors">
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </header>
+  <body class="min-h-screen bg-(--color-background) text-(--color-foreground) antialiased">
+    <Header siteName={siteName} items={navigation?.items ?? []} />
+
     <main class="max-w-6xl mx-auto px-4 py-8">
       <slot />
     </main>
-    <footer class="border-t border-gray-200 mt-16">
-      <div class="max-w-6xl mx-auto px-4 py-8 text-center text-gray-500 text-sm">
-        © {new Date().getFullYear()} {siteName}
-      </div>
-    </footer>
+
+    <Footer siteName={siteName} />
   </body>
 </html>

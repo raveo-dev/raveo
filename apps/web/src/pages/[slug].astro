@@ -1,5 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import CmsImage from '../components/CmsImage.astro';
+import { renderLexical } from '@raveo/ui/richtext';
 
 const { slug } = Astro.params;
 
@@ -19,12 +21,14 @@ const noIndex = page.seo?.noIndex ?? false;
   {hero && (
     <section class="relative min-h-[40vh] flex items-center justify-center overflow-hidden bg-black">
       {hero.image?.url && (
-        <img
+        <CmsImage
           src={hero.image.url}
           alt={hero.image.alt ?? ''}
           width={hero.image.width ?? 1920}
           height={hero.image.height ?? 1080}
-          class="absolute inset-0 w-full h-full object-cover opacity-60"
+          class="absolute inset-0 opacity-60"
+          loading="eager"
+          cover
         />
       )}
       <div class="relative z-10 text-center px-6 max-w-3xl mx-auto">
@@ -47,8 +51,8 @@ const noIndex = page.seo?.noIndex ?? false;
   )}
 
   <section class="py-12 px-6">
-    <div class="max-w-3xl mx-auto">
-      <p class="text-gray-500 italic">Rich text rendering coming soon.</p>
+    <div class="max-w-3xl mx-auto richtext">
+      <Fragment set:html={renderLexical(page.content)} />
     </div>
   </section>
 </Layout>

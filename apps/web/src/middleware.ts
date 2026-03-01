@@ -10,14 +10,9 @@ async function fetchFromCMS(
         const url = `https://cms${path}`;
         const fallbackUrl = `${cmsUrl}${path}`;
 
-        console.log("fetcher:", fetcher ? "binding" : "http fallback");
-        console.log("fetching:", fetcher ? url : fallbackUrl);
-
         const res = fetcher
             ? await fetcher.fetch(url as Parameters<Fetcher["fetch"]>[0])
             : await fetch(fallbackUrl);
-
-        console.log("response status:", res.status);
 
         if (!res.ok) return null;
         return await res.json();
@@ -27,34 +22,72 @@ async function fetchFromCMS(
     }
 }
 
+async function cachedFetch(
+    fetcher: Fetcher | null,
+    cmsUrl: string,
+    path: string,
+    cache: KVNamespace | null,
+) {
+    if (cache) {
+        try {
+            const cached = await cache.get(path, "json");
+            if (cached) return cached;
+        } catch {
+            // KV read failed — fall through to CMS
+        }
+    }
+
+    const data = await fetchFromCMS(fetcher, cmsUrl, path);
+
+    if (data && cache) {
+        // Fire-and-forget — don't block the response
+        cache
+            .put(path, JSON.stringify(data), { expirationTtl: 300 })
+            .catch(() => {});
+    }
+
+    return data;
+}
+
 export const onRequest = defineMiddleware(async ({ locals }, next) => {
     let cmsBinding: Fetcher | null = null;
+    let cacheBinding: KVNamespace | null = null;
 
     try {
         const { env } = await import("cloudflare:workers");
-        const binding = (env as unknown as { CMS?: Fetcher }).CMS;
-        // Only use binding in production — in dev miniflare provides it but CMS Worker isn't running
-        if (binding && import.meta.env.PROD) {
-            cmsBinding = binding;
+        const cfEnv = env as unknown as { CMS?: Fetcher; CACHE?: KVNamespace };
+        // Only use bindings in production — in dev miniflare provides them but Workers aren't running
+        if (import.meta.env.PROD) {
+            if (cfEnv.CMS) cmsBinding = cfEnv.CMS;
+            if (cfEnv.CACHE) cacheBinding = cfEnv.CACHE;
         }
     } catch {
         // Dev environment — cloudflare:workers module not available
     }
 
     const cmsUrl = import.meta.env.CMS_URL;
+    const fetcher = cmsBinding;
+    const cache = cacheBinding;
 
     const [navigation, siteSettings, pagesData, postsData] = await Promise.all([
-        fetchFromCMS(cmsBinding, cmsUrl, "/api/globals/navigation?depth=1"),
-        fetchFromCMS(cmsBinding, cmsUrl, "/api/globals/site-settings?depth=1"),
-        fetchFromCMS(
-            cmsBinding,
+        cachedFetch(fetcher, cmsUrl, "/api/globals/navigation?depth=1", cache),
+        cachedFetch(
+            fetcher,
+            cmsUrl,
+            "/api/globals/site-settings?depth=1",
+            cache,
+        ),
+        cachedFetch(
+            fetcher,
             cmsUrl,
             "/api/pages?depth=2&limit=100&where[status][equals]=published",
+            cache,
         ),
-        fetchFromCMS(
-            cmsBinding,
+        cachedFetch(
+            fetcher,
             cmsUrl,
-            "/api/posts?depth=1&limit=100&where[status][equals]=published",
+            "/api/posts?depth=2&limit=100&where[status][equals]=published",
+            cache,
         ),
     ]);
 

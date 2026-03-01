@@ -1,0 +1,24 @@
+---
+export interface Props {
+  siteName: string;
+  class?: string;
+}
+
+const { siteName, class: className = "" } = Astro.props;
+
+const classes = [
+  "border-t border-(--color-border) bg-(--color-background) mt-16",
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<footer class={classes}>
+  <div class="max-w-6xl mx-auto px-4 py-8 flex flex-col items-center gap-4">
+    <slot />
+    <p class="text-muted text-sm">
+      &copy; {new Date().getFullYear()} {siteName}
+    </p>
+  </div>
+</footer>

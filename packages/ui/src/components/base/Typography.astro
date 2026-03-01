@@ -1,0 +1,40 @@
+---
+export interface Props {
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span";
+  variant?: "h1" | "h2" | "h3" | "h4" | "body" | "body-sm" | "caption";
+  muted?: boolean;
+  class?: string;
+}
+
+const {
+  as,
+  variant = "body",
+  muted = false,
+  class: className = "",
+} = Astro.props;
+
+const config: Record<string, { tag: string; classes: string }> = {
+  h1: { tag: "h1", classes: "text-4xl md:text-5xl font-bold tracking-tight leading-tight" },
+  h2: { tag: "h2", classes: "text-3xl md:text-4xl font-bold tracking-tight leading-tight" },
+  h3: { tag: "h3", classes: "text-2xl md:text-3xl font-semibold leading-snug" },
+  h4: { tag: "h4", classes: "text-xl md:text-2xl font-semibold leading-snug" },
+  body: { tag: "p", classes: "text-base leading-relaxed" },
+  "body-sm": { tag: "p", classes: "text-sm leading-relaxed" },
+  caption: { tag: "span", classes: "text-xs leading-normal tracking-wide uppercase font-medium" },
+};
+
+const { tag, classes: variantClasses } = config[variant] ?? config.body;
+const Tag = as ?? tag;
+
+const classes = [
+  variantClasses,
+  muted ? "text-muted" : "text-foreground",
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<Tag class={classes}>
+  <slot />
+</Tag>

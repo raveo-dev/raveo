@@ -13,6 +13,9 @@ export default defineConfig({
         prefetchAll: true,
         defaultStrategy: "viewport",
     },
+    security: {
+        checkOrigin: false,
+    },
     vite: {
         plugins: [tailwindcss()],
     },

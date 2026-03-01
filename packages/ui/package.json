@@ -1,0 +1,21 @@
+{
+      "name": "@raveo/ui",
+      "version": "0.0.1",
+      "type": "module",
+      "exports": {
+            "./theme.css": "./src/styles/theme.css",
+            "./components/*": "./src/components/*",
+            "./richtext": "./src/components/richtext/render.ts"
+      },
+      "files": [
+            "src"
+      ],
+      "dependencies": {
+            "astro": "^6.0.0-beta.6",
+            "tailwindcss": "^4.2.1"
+      },
+      "devDependencies": {
+            "@raveo/config": "workspace:*",
+            "@raveo/types": "workspace:*"
+      }
+}

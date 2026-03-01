@@ -1,3 +1,5 @@
+@source "../../../../packages/ui/src/**/*.astro";
+@import "@raveo/ui/theme.css";
 @import "tailwindcss";
 
 @view-transition {

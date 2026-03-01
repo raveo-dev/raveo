@@ -15,6 +15,15 @@ export const Pages: CollectionConfig = {
   versions: {
     drafts: true,
   },
+  hooks: {
+    afterChange: [
+      async ({ doc }) => {
+        const { revalidateAfterChange } = await import('../hooks/revalidate')
+        await revalidateAfterChange({ doc } as any)
+        return doc
+      },
+    ],
+  },
   access: {
     read: ({ req: { user } }) => {
       if (user) return true

@@ -1,0 +1,53 @@
+---
+export interface Props {
+  variant?: "primary" | "secondary" | "accent" | "ghost" | "destructive";
+  size?: "sm" | "md" | "lg";
+  href?: string;
+  disabled?: boolean;
+  fullWidth?: boolean;
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  variant = "primary",
+  size = "md",
+  href,
+  disabled = false,
+  fullWidth = false,
+  class: className = "",
+  ...rest
+} = Astro.props;
+
+const Tag = href ? "a" : "button";
+
+const base =
+  "inline-flex items-center justify-center font-medium rounded-(--radius-md) transition-colors duration-(--transition-fast) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-accent) disabled:opacity-50 disabled:pointer-events-none cursor-pointer";
+
+const variants: Record<string, string> = {
+  primary: "bg-(--color-primary) text-(--color-primary-foreground) hover:bg-(--color-primary-hover)",
+  secondary: "bg-(--color-secondary) text-(--color-secondary-foreground) hover:bg-(--color-secondary-hover)",
+  accent: "bg-(--color-accent) text-(--color-accent-foreground) hover:bg-(--color-accent-hover)",
+  ghost: "bg-transparent text-foreground hover:bg-(--color-surface)",
+  destructive: "bg-(--color-destructive) text-(--color-destructive-foreground) hover:opacity-90",
+};
+
+const sizes: Record<string, string> = {
+  sm: "text-sm px-3 py-1.5 gap-1.5",
+  md: "text-sm px-4 py-2 gap-2",
+  lg: "text-base px-6 py-3 gap-2.5",
+};
+
+const classes = [base, variants[variant], sizes[size], fullWidth && "w-full", className]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<Tag
+  class={classes}
+  {...(href ? { href } : {})}
+  {...(disabled && !href ? { disabled } : {})}
+  {...rest}
+>
+  <slot />
+</Tag>

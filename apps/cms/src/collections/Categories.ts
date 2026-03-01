@@ -7,6 +7,15 @@ export const Categories: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'slug', 'updatedAt'],
   },
+  hooks: {
+    afterChange: [
+      async ({ doc }) => {
+        const { revalidateAfterChange } = await import('../hooks/revalidate')
+        await revalidateAfterChange({ doc } as any)
+        return doc
+      },
+    ],
+  },
   access: {
     read: () => true,
     create: isAdminOrEditor,
