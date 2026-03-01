@@ -1,7 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import CmsImage from "../components/CmsImage.astro";
+import { renderLexical } from "../utils/lexical";
 
 const homePage = Astro.locals.pages.find((p) => p.slug === "home") ?? null;
+const contentHtml = renderLexical(homePage?.content);
 const { siteSettings } = Astro.locals;
 
 const hero = homePage?.hero ?? null;
@@ -22,12 +25,14 @@ const schema = {
   {hero ? (
     <section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-black">
       {hero.image?.url && (
-        <img
+        <CmsImage
           src={hero.image.url}
           alt={hero.image.alt ?? ""}
           width={hero.image.width ?? 1920}
           height={hero.image.height ?? 1080}
-          class="absolute inset-0 w-full h-full object-cover opacity-60"
+          class="absolute inset-0 opacity-60"
+          loading="eager"
+          cover
         />
       )}
       <div class="relative z-10 text-center px-6 max-w-3xl mx-auto">
@@ -48,6 +53,14 @@ const schema = {
         <p class="text-lg text-white/80">
           {Astro.locals.siteSettings?.siteDescription ?? ""}
         </p>
+      </div>
+    </section>
+  )}
+
+  {contentHtml && (
+    <section class="py-12 px-6">
+      <div class="max-w-3xl mx-auto prose prose-gray max-w-none">
+        <Fragment set:html={contentHtml} />
       </div>
     </section>
   )}

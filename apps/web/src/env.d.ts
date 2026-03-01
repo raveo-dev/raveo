@@ -7,6 +7,8 @@ type ENV = {
 
 type Runtime = import("@astrojs/cloudflare").Runtime<ENV>;
 
+type LexicalContent = import("./utils/lexical").LexicalContent;
+
 interface PayloadPage {
     id: string;
     title: string;
@@ -23,6 +25,7 @@ interface PayloadPage {
             height?: number;
         } | null;
     } | null;
+    content?: LexicalContent | null;
     seo?: {
         title?: string | null;
         description?: string | null;
@@ -35,6 +38,7 @@ interface PayloadPost {
     title: string;
     slug: string;
     excerpt?: string | null;
+    content?: LexicalContent | null;
     publishedDate?: string | null;
     categories?: Array<{ id: string; name: string }> | null;
     seo?: {

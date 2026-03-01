@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { renderLexical } from '../../utils/lexical';
 
 const { slug } = Astro.params;
 
@@ -53,7 +54,7 @@ const schema = {
       </div>
     </header>
     <div class="prose prose-gray max-w-none">
-      <p class="text-gray-500 italic">Rich text rendering coming soon.</p>
+      <Fragment set:html={renderLexical(post.content)} />
     </div>
   </article>
 </Layout>
