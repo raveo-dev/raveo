@@ -1,5 +1,11 @@
 import { defineMiddleware } from 'astro:middleware';
 import type { Fetcher } from '@cloudflare/workers-types';
+import {
+  createRateLimiter,
+  getClientIp,
+  getRateLimitConfig,
+  rateLimitHeaders,
+} from './lib/rate-limit';
 
 async function fetchFromCMS(fetcher: Fetcher | null, cmsUrl: string, path: string) {
   try {
@@ -43,7 +49,7 @@ async function cachedFetch(
   return data;
 }
 
-export const onRequest = defineMiddleware(async ({ locals }, next) => {
+export const onRequest = defineMiddleware(async ({ locals, request }, next) => {
   let cmsBinding: Fetcher | null = null;
   let cacheBinding: KVNamespace | null = null;
 
@@ -59,6 +65,34 @@ export const onRequest = defineMiddleware(async ({ locals }, next) => {
     // Dev environment — cloudflare:workers module not available
   }
 
+  // ── Rate Limiting ──────────────────────────────────────────────────────────
+  const url = new URL(request.url);
+  const rateLimitMatch = getRateLimitConfig(request.method, url.pathname);
+
+  if (rateLimitMatch && cacheBinding) {
+    const ip = getClientIp(request);
+    const limiter = createRateLimiter(cacheBinding);
+    const result = await limiter.check(`${ip}:${rateLimitMatch.key}`, rateLimitMatch.config);
+
+    if (!result.allowed) {
+      const headers = rateLimitHeaders(result);
+      return new Response(
+        JSON.stringify({
+          error: 'Too Many Requests',
+          retryAfter: headers['Retry-After'],
+        }),
+        {
+          status: 429,
+          headers: {
+            'Content-Type': 'application/json',
+            ...headers,
+          },
+        },
+      );
+    }
+  }
+
+  // ── CMS Data Fetching ──────────────────────────────────────────────────────
   const cmsUrl = import.meta.env.CMS_URL;
   const fetcher = cmsBinding;
   const cache = cacheBinding;
