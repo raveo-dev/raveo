@@ -1,0 +1,17 @@
+# Lefthook — Git hooks for Raveo monorepo
+# https://github.com/evilmartians/lefthook
+#
+# Install: pnpm add -D lefthook && pnpm lefthook install
+
+pre-commit:
+    parallel: true
+    commands:
+        biome-check:
+            glob: "*.{js,jsx,ts,tsx,json,jsonc,css}"
+            run: pnpm biome check --staged --no-errors-on-unmatched --colors=off {staged_files}
+            stage_fixed: true
+
+pre-push:
+    commands:
+        typecheck:
+            run: pnpm typecheck

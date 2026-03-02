@@ -29,3 +29,6 @@ Thumbs.db
 .cursor/
 *.suo
 *.user
+
+# Lefthook
+lefthook-local.yml
