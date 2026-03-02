@@ -1,6 +1,6 @@
-import type { CollectionConfig } from 'payload'
-import { seoField } from '../fields'
-import { isAdmin, isAdminOrEditor } from '../access'
+import type { CollectionConfig } from 'payload';
+import { isAdmin, isAdminOrEditor } from '../access';
+import { seoField } from '../fields';
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -8,8 +8,8 @@ export const Pages: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'status', 'updatedAt'],
     preview: (doc) => {
-      if (!doc?.slug) return null
-      return `${process.env.WEB_URL}/preview?slug=${doc.slug}&collection=pages`
+      if (!doc?.slug) return null;
+      return `${process.env.WEB_URL}/preview?slug=${doc.slug}&collection=pages`;
     },
   },
   versions: {
@@ -18,16 +18,16 @@ export const Pages: CollectionConfig = {
   hooks: {
     afterChange: [
       async ({ doc }) => {
-        const { revalidateAfterChange } = await import('../hooks/revalidate')
-        await revalidateAfterChange({ doc } as any)
-        return doc
+        const { revalidateAfterChange } = await import('../hooks/revalidate');
+        await revalidateAfterChange({ doc } as any);
+        return doc;
       },
     ],
   },
   access: {
     read: ({ req: { user } }) => {
-      if (user) return true
-      return { status: { equals: 'published' } }
+      if (user) return true;
+      return { status: { equals: 'published' } };
     },
     create: isAdminOrEditor,
     update: isAdminOrEditor,
@@ -51,14 +51,14 @@ export const Pages: CollectionConfig = {
       hooks: {
         beforeValidate: [
           ({ value, data }) => {
-            if (value) return value
+            if (value) return value;
             if (data?.title) {
               return data.title
                 .toLowerCase()
                 .normalize('NFD')
                 .replace(/[\u0300-\u036f]/g, '')
                 .replace(/[^a-z0-9]+/g, '-')
-                .replace(/(^-|-$)/g, '')
+                .replace(/(^-|-$)/g, '');
             }
           },
         ],
@@ -105,4 +105,4 @@ export const Pages: CollectionConfig = {
     },
     seoField,
   ],
-}
+};

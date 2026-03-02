@@ -1,9 +1,8 @@
 {
-      "name": "@raveo/config",
-      "version": "0.0.1",
-      "private": true,
-      "exports": {
-            "./biome": "./biome.json",
-            "./tsconfig": "./tsconfig.json"
-      }
+  "name": "@raveo/config",
+  "version": "0.0.1",
+  "private": true,
+  "exports": {
+    "./tsconfig": "./tsconfig.json"
+  }
 }

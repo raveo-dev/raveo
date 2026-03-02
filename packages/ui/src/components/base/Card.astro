@@ -1,6 +1,6 @@
 ---
 export interface Props {
-  as?: "div" | "article" | "section";
+  as?: 'div' | 'article' | 'section';
   href?: string;
   padded?: boolean;
   bordered?: boolean;
@@ -9,26 +9,27 @@ export interface Props {
 }
 
 const {
-  as: Tag = "div",
+  as: Tag = 'div',
   href,
   padded = true,
   bordered = true,
   hoverable = false,
-  class: className = "",
+  class: className = '',
 } = Astro.props;
 
-const Wrapper = href ? "a" : Tag;
+const _Wrapper = href ? 'a' : Tag;
 
-const classes = [
-  "block rounded-(--radius-lg) bg-(--color-surface-raised) overflow-hidden",
-  bordered && "border border-(--color-border)",
-  hoverable && "transition-all duration-(--transition-base) hover:shadow-(--shadow-md) hover:border-(--color-border-hover)",
-  href && "no-underline text-inherit",
-  padded && "p-6",
+const _classes = [
+  'block rounded-(--radius-lg) bg-(--color-surface-raised) overflow-hidden',
+  bordered && 'border border-(--color-border)',
+  hoverable &&
+    'transition-all duration-(--transition-base) hover:shadow-(--shadow-md) hover:border-(--color-border-hover)',
+  href && 'no-underline text-inherit',
+  padded && 'p-6',
   className,
 ]
   .filter(Boolean)
-  .join(" ");
+  .join(' ');
 ---
 
 <Wrapper class={classes} {...(href ? { href } : {})}>

@@ -8,36 +8,27 @@ export interface NavItem {
 export interface Props {
   items: NavItem[];
   currentPath?: string;
-  direction?: "horizontal" | "vertical";
+  direction?: 'horizontal' | 'vertical';
   class?: string;
 }
 
-const {
-  items,
-  currentPath = "",
-  direction = "horizontal",
-  class: className = "",
-} = Astro.props;
+const { items, currentPath = '', direction = 'horizontal', class: className = '' } = Astro.props;
 
 function isActive(href: string, current: string): boolean {
-  if (href === "/") return current === "/";
+  if (href === '/') return current === '/';
   return current.startsWith(href);
 }
 
 const directionClasses: Record<string, string> = {
-  horizontal: "flex flex-row gap-6",
-  vertical: "flex flex-col gap-2",
+  horizontal: 'flex flex-row gap-6',
+  vertical: 'flex flex-col gap-2',
 };
 
-const classes = [
-  "list-none m-0 p-0",
-  directionClasses[direction],
-  className,
-]
+const _classes = ['list-none m-0 p-0', directionClasses[direction], className]
   .filter(Boolean)
-  .join(" ");
+  .join(' ');
 
-const navItems = items.map((item) => ({
+const _navItems = items.map((item) => ({
   ...item,
   active: isActive(item.href, currentPath),
   children: item.children?.map((child) => ({

@@ -1,21 +1,16 @@
 ---
-import type { LexicalContent } from "./render";
-import { renderLexical } from "./render";
+import type { LexicalContent } from './render';
+import { renderLexical } from './render';
 
 export interface Props {
   content: LexicalContent | null | undefined;
   class?: string;
 }
 
-const { content, class: className = "" } = Astro.props;
-const html = renderLexical(content);
+const { content, class: className = '' } = Astro.props;
+const _html = renderLexical(content);
 
-const classes = [
-  "richtext",
-  className,
-]
-  .filter(Boolean)
-  .join(" ");
+const _classes = ['richtext', className].filter(Boolean).join(' ');
 ---
 
 {html ? (

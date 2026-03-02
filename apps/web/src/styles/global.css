@@ -1,7 +1,9 @@
-@source "../../../../packages/ui/src/**/*.astro";
 @import "@raveo/ui/theme.css";
 @import "tailwindcss";
+@source "../../../../packages/ui/src/**/*.astro";
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 @view-transition {
-    navigation: auto;
+  navigation: auto;
 }

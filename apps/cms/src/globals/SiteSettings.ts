@@ -1,5 +1,5 @@
-import type { GlobalConfig } from 'payload'
-import { seoField } from '../fields'
+import type { GlobalConfig } from 'payload';
+import { seoField } from '../fields';
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
@@ -9,9 +9,9 @@ export const SiteSettings: GlobalConfig = {
   hooks: {
     afterChange: [
       async ({ doc }) => {
-        const { revalidateGlobalAfterChange } = await import('../hooks/revalidate')
-        await revalidateGlobalAfterChange({ doc } as any)
-        return doc
+        const { revalidateGlobalAfterChange } = await import('../hooks/revalidate');
+        await revalidateGlobalAfterChange({ doc } as any);
+        return doc;
       },
     ],
   },
@@ -67,4 +67,4 @@ export const SiteSettings: GlobalConfig = {
     },
     seoField,
   ],
-}
+};

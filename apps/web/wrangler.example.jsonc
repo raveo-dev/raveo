@@ -1,21 +1,21 @@
 {
-    "$schema": "node_modules/wrangler/config-schema.json",
-    "name": "your-web-worker-name",
-    "compatibility_date": "2026-02-27",
-    "compatibility_flags": ["nodejs_compat"],
-    "assets": {
-        "directory": "./dist",
-    },
-    "kv_namespaces": [
-        {
-            "binding": "CACHE",
-            "id": "YOUR_KV_NAMESPACE_ID",
-        },
-    ],
-    "services": [
-        {
-            "binding": "CMS",
-            "service": "your-cms-worker-name",
-        },
-    ],
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "your-web-worker-name",
+  "compatibility_date": "2026-02-27",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "CACHE",
+      "id": "YOUR_KV_NAMESPACE_ID"
+    }
+  ],
+  "services": [
+    {
+      "binding": "CMS",
+      "service": "your-cms-worker-name"
+    }
+  ]
 }

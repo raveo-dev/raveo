@@ -1,22 +1,22 @@
 // @ts-check
-import cloudflare from "@astrojs/cloudflare";
-import tailwindcss from "@tailwindcss/vite";
-import { defineConfig } from "astro/config";
+import cloudflare from '@astrojs/cloudflare';
+import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-    site: "https://YOUR_DOMAIN",
-    output: "server",
-    adapter: cloudflare({
-        remoteBindings: false,
-    }),
-    prefetch: {
-        prefetchAll: true,
-        defaultStrategy: "viewport",
-    },
-    security: {
-        checkOrigin: false,
-    },
-    vite: {
-        plugins: [tailwindcss()],
-    },
+  site: 'https://YOUR_DOMAIN',
+  output: 'server',
+  adapter: cloudflare({
+    remoteBindings: false,
+  }),
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'viewport',
+  },
+  security: {
+    checkOrigin: false,
+  },
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });

@@ -1,28 +1,28 @@
 ---
 interface Props {
-    src: string;
-    alt: string;
-    width?: number;
-    height?: number;
-    class?: string;
-    sizes?: string;
-    loading?: "lazy" | "eager";
-    cover?: boolean;
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  sizes?: string;
+  loading?: 'lazy' | 'eager';
+  cover?: boolean;
 }
 
 const {
-    src,
-    alt,
-    width,
-    height,
-    class: className,
-    sizes,
-    loading = "lazy",
-    cover = false,
+  src,
+  alt,
+  width,
+  height,
+  class: className,
+  sizes,
+  loading = 'lazy',
+  cover = false,
 } = Astro.props;
 
-const coverClass = cover ? "object-cover w-full h-full" : "";
-const classes = [coverClass, className].filter(Boolean).join(" ") || undefined;
+const coverClass = cover ? 'object-cover w-full h-full' : '';
+const _classes = [coverClass, className].filter(Boolean).join(' ') || undefined;
 ---
 
 <img

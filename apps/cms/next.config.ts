@@ -1,4 +1,4 @@
-import { withPayload } from '@payloadcms/next/withPayload'
+import { withPayload } from '@payloadcms/next/withPayload';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -13,7 +13,7 @@ const nextConfig = {
         destination: '/admin',
         permanent: false,
       },
-    ]
+    ];
   },
 
   // biome-ignore lint/suspicious/noExplicitAny: webpack config type from Next.js
@@ -22,10 +22,10 @@ const nextConfig = {
       '.cjs': ['.cts', '.cjs'],
       '.js': ['.ts', '.tsx', '.js', '.jsx'],
       '.mjs': ['.mts', '.mjs'],
-    }
+    };
 
-    return webpackConfig
+    return webpackConfig;
   },
-}
+};
 
-export default withPayload(nextConfig, { devBundleServerPackages: false })
+export default withPayload(nextConfig, { devBundleServerPackages: false });

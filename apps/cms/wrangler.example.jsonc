@@ -6,26 +6,26 @@
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
     "directory": ".open-next/assets",
-    "binding": "ASSETS",
+    "binding": "ASSETS"
   },
   "d1_databases": [
     {
       "binding": "D1",
       "database_id": "YOUR_D1_DATABASE_ID",
       "database_name": "YOUR_D1_DATABASE_NAME",
-      "remote": true,
-    },
+      "remote": true
+    }
   ],
   "services": [
     {
       "binding": "WEB",
-      "service": "my-raveo-web-worker",
-    },
+      "service": "my-raveo-web-worker"
+    }
   ],
   "r2_buckets": [
     {
       "binding": "R2",
-      "bucket_name": "YOUR_R2_BUCKET_NAME",
-    },
-  ],
+      "bucket_name": "YOUR_R2_BUCKET_NAME"
+    }
+  ]
 }

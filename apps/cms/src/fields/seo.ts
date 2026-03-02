@@ -1,4 +1,4 @@
-import type { GroupField } from 'payload'
+import type { GroupField } from 'payload';
 
 export const seoField: GroupField = {
   name: 'seo',
@@ -41,4 +41,4 @@ export const seoField: GroupField = {
   admin: {
     description: 'Search engine optimization settings.',
   },
-}
+};

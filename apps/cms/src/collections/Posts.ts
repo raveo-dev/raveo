@@ -1,6 +1,6 @@
-import type { CollectionConfig } from 'payload'
-import { seoField } from '../fields'
-import { isAdmin, isAdminOrEditor } from '../access'
+import type { CollectionConfig } from 'payload';
+import { isAdmin, isAdminOrEditor } from '../access';
+import { seoField } from '../fields';
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -8,8 +8,8 @@ export const Posts: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'status', 'publishedDate', 'updatedAt'],
     preview: (doc) => {
-      if (!doc?.slug) return null
-      return `${process.env.WEB_URL}/preview?slug=${doc.slug}&collection=posts`
+      if (!doc?.slug) return null;
+      return `${process.env.WEB_URL}/preview?slug=${doc.slug}&collection=posts`;
     },
   },
   versions: {
@@ -18,16 +18,16 @@ export const Posts: CollectionConfig = {
   hooks: {
     afterChange: [
       async ({ doc }) => {
-        const { revalidateAfterChange } = await import('../hooks/revalidate')
-        await revalidateAfterChange({ doc } as any)
-        return doc
+        const { revalidateAfterChange } = await import('../hooks/revalidate');
+        await revalidateAfterChange({ doc } as any);
+        return doc;
       },
     ],
   },
   access: {
     read: ({ req: { user } }) => {
-      if (user) return true
-      return { status: { equals: 'published' } }
+      if (user) return true;
+      return { status: { equals: 'published' } };
     },
     create: isAdminOrEditor,
     update: isAdminOrEditor,
@@ -51,14 +51,14 @@ export const Posts: CollectionConfig = {
       hooks: {
         beforeValidate: [
           ({ value, data }) => {
-            if (value) return value
+            if (value) return value;
             if (data?.title) {
               return data.title
                 .toLowerCase()
                 .normalize('NFD')
                 .replace(/[\u0300-\u036f]/g, '')
                 .replace(/[^a-z0-9]+/g, '-')
-                .replace(/(^-|-$)/g, '')
+                .replace(/(^-|-$)/g, '');
             }
           },
         ],
@@ -93,8 +93,8 @@ export const Posts: CollectionConfig = {
       hooks: {
         beforeChange: [
           ({ req, operation, value }) => {
-            if (operation === 'create') return req.user?.id
-            return value
+            if (operation === 'create') return req.user?.id;
+            return value;
           },
         ],
       },
@@ -141,13 +141,13 @@ export const Posts: CollectionConfig = {
         beforeChange: [
           ({ value, data }) => {
             if (data?.status === 'published' && !value) {
-              return new Date().toISOString()
+              return new Date().toISOString();
             }
-            return value
+            return value;
           },
         ],
       },
     },
     seoField,
   ],
-}
+};

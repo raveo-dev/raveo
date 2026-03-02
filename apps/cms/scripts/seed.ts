@@ -1,18 +1,18 @@
-import { getPayload } from 'payload'
-import config from '../src/payload.config'
+import { getPayload } from 'payload';
+import config from '../src/payload.config';
 
 async function seed() {
-  const payload = await getPayload({ config: await config })
+  const payload = await getPayload({ config: await config });
 
-  console.log('🌱 Seeding database...')
+  console.log('🌱 Seeding database...');
 
   // Create admin user
   const existingUsers = await payload.find({
     collection: 'users',
     limit: 1,
-  })
-
-  let adminUser
+  });
+  // biome-ignore lint/suspicious/noImplicitAnyLet: assigned conditionally below
+  let adminUser;
 
   if (existingUsers.totalDocs === 0) {
     adminUser = await payload.create({
@@ -22,11 +22,11 @@ async function seed() {
         password: 'password',
         role: 'admin',
       },
-    })
-    console.log('✅ Admin user created: admin@example.com / password')
+    });
+    console.log('✅ Admin user created: admin@example.com / password');
   } else {
-    adminUser = existingUsers.docs[0]
-    console.log('⏭️  Admin user already exists, skipping')
+    adminUser = existingUsers.docs[0];
+    console.log('⏭️  Admin user already exists, skipping');
   }
 
   // Create site settings
@@ -36,8 +36,8 @@ async function seed() {
       siteName: 'My Raveo Site',
       siteDescription: 'Built with Raveo — Payload CMS on Cloudflare Workers',
     },
-  })
-  console.log('✅ Site settings created')
+  });
+  console.log('✅ Site settings created');
 
   // Create navigation
   await payload.updateGlobal({
@@ -49,8 +49,8 @@ async function seed() {
         { label: 'About', href: '/about' },
       ],
     },
-  })
-  console.log('✅ Navigation created')
+  });
+  console.log('✅ Navigation created');
 
   // Create categories
   const category = await payload.create({
@@ -60,8 +60,8 @@ async function seed() {
       slug: 'general',
       description: 'General posts and updates',
     },
-  })
-  console.log('✅ Category created: General')
+  });
+  console.log('✅ Category created: General');
 
   // Create homepage
   await payload.create({
@@ -75,8 +75,8 @@ async function seed() {
         subheading: 'A Payload CMS boilerplate on Cloudflare Workers',
       },
     },
-  })
-  console.log('✅ Homepage created')
+  });
+  console.log('✅ Homepage created');
 
   // Create sample posts
   const posts = [
@@ -98,7 +98,7 @@ async function seed() {
       excerpt: 'This is an example of a draft post.',
       status: 'draft' as const,
     },
-  ]
+  ];
 
   for (const post of posts) {
     await payload.create({
@@ -109,15 +109,15 @@ async function seed() {
         author: adminUser.id,
         categories: [category.id],
       },
-    })
+    });
   }
-  console.log('✅ Sample posts created')
+  console.log('✅ Sample posts created');
 
-  console.log('🎉 Seeding complete!')
-  process.exit(0)
+  console.log('🎉 Seeding complete!');
+  process.exit(0);
 }
 
 seed().catch((err) => {
-  console.error('❌ Seeding failed:', err)
-  process.exit(1)
-})
+  console.error('❌ Seeding failed:', err);
+  process.exit(1);
+});

@@ -1,10 +1,7 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import { renderLexical } from '@raveo/ui/richtext';
-
 const { slug } = Astro.params;
 
-const post = Astro.locals.posts.find(p => p.slug === slug) ?? null;
+const post = Astro.locals.posts.find((p) => p.slug === slug) ?? null;
 
 if (!post) {
   return Astro.redirect('/404');
@@ -13,7 +10,7 @@ if (!post) {
 const { siteSettings } = Astro.locals;
 const baseUrl = Astro.site?.toString().replace(/\/$/, '') ?? '';
 
-const schema = {
+const _schema = {
   '@context': 'https://schema.org',
   '@type': 'Article',
   headline: post.title,

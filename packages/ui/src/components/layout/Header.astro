@@ -11,16 +11,13 @@ export interface Props {
   class?: string;
 }
 
-const { siteName, items = [], class: className = "" } = Astro.props;
+const { siteName, items = [], class: className = '' } = Astro.props;
 
-const classes = [
-  "border-b border-(--color-border) bg-(--color-background)",
-  className,
-]
+const _classes = ['border-b border-(--color-border) bg-(--color-background)', className]
   .filter(Boolean)
-  .join(" ");
+  .join(' ');
 
-const navItems = items.map((item) => ({
+const _navItems = items.map((item) => ({
   label: item.label,
   href: item.href,
 }));

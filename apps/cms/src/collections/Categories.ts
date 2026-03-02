@@ -1,5 +1,5 @@
-import type { CollectionConfig } from 'payload'
-import { isAdmin, isAdminOrEditor } from '../access'
+import type { CollectionConfig } from 'payload';
+import { isAdmin, isAdminOrEditor } from '../access';
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
@@ -10,9 +10,9 @@ export const Categories: CollectionConfig = {
   hooks: {
     afterChange: [
       async ({ doc }) => {
-        const { revalidateAfterChange } = await import('../hooks/revalidate')
-        await revalidateAfterChange({ doc } as any)
-        return doc
+        const { revalidateAfterChange } = await import('../hooks/revalidate');
+        await revalidateAfterChange({ doc } as any);
+        return doc;
       },
     ],
   },
@@ -40,14 +40,14 @@ export const Categories: CollectionConfig = {
       hooks: {
         beforeValidate: [
           ({ value, data }) => {
-            if (value) return value
+            if (value) return value;
             if (data?.name) {
               return data.name
                 .toLowerCase()
                 .normalize('NFD')
                 .replace(/[\u0300-\u036f]/g, '')
                 .replace(/[^a-z0-9]+/g, '-')
-                .replace(/(^-|-$)/g, '')
+                .replace(/(^-|-$)/g, '');
             }
           },
         ],
@@ -59,4 +59,4 @@ export const Categories: CollectionConfig = {
       localized: true,
     },
   ],
-}
+};

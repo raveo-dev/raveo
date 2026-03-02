@@ -1,4 +1,4 @@
-import type { GlobalConfig } from 'payload'
+import type { GlobalConfig } from 'payload';
 
 export const Navigation: GlobalConfig = {
   slug: 'navigation',
@@ -8,9 +8,9 @@ export const Navigation: GlobalConfig = {
   hooks: {
     afterChange: [
       async ({ doc }) => {
-        const { revalidateGlobalAfterChange } = await import('../hooks/revalidate')
-        await revalidateGlobalAfterChange({ doc } as any)
-        return doc
+        const { revalidateGlobalAfterChange } = await import('../hooks/revalidate');
+        await revalidateGlobalAfterChange({ doc } as any);
+        return doc;
       },
     ],
   },
@@ -53,4 +53,4 @@ export const Navigation: GlobalConfig = {
       ],
     },
   ],
-}
+};

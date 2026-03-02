@@ -1,6 +1,4 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-
 const { siteSettings } = Astro.locals;
 const baseUrl = Astro.site?.toString().replace(/\/$/, '') ?? '';
 
@@ -10,12 +8,12 @@ const sortedPosts = [...Astro.locals.posts].sort((a, b) => {
   return dateB - dateA;
 });
 
-const schema = {
+const _schema = {
   '@context': 'https://schema.org',
   '@type': 'Blog',
   name: `Blog — ${siteSettings?.siteName ?? 'Raveo'}`,
   url: `${baseUrl}/blog`,
-  blogPost: sortedPosts.slice(0, 10).map(post => ({
+  blogPost: sortedPosts.slice(0, 10).map((post) => ({
     '@type': 'BlogPosting',
     headline: post.title,
     url: `${baseUrl}/blog/${post.slug}`,

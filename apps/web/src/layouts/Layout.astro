@@ -1,7 +1,5 @@
 ---
-import "../styles/global.css";
-import Header from "@raveo/ui/components/layout/Header.astro";
-import Footer from "@raveo/ui/components/layout/Footer.astro";
+import '../styles/global.css';
 
 interface Props {
   title: string;
@@ -14,9 +12,9 @@ interface Props {
 const { title, description, noIndex, schema, canonical } = Astro.props;
 const { navigation, siteSettings } = Astro.locals;
 
-const siteName = siteSettings?.siteName ?? "Raveo";
-const siteDescription = description ?? siteSettings?.siteDescription ?? "";
-const canonicalUrl = canonical ?? Astro.url.href;
+const _siteName = siteSettings?.siteName ?? 'Raveo';
+const _siteDescription = description ?? siteSettings?.siteDescription ?? '';
+const _canonicalUrl = canonical ?? Astro.url.href;
 ---
 
 <!doctype html>
@@ -32,9 +30,21 @@ const canonicalUrl = canonical ?? Astro.url.href;
       <script type="application/ld+json" set:html={JSON.stringify(schema)} />
     )}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="color-scheme" content="light dark" />
+
+    {/* FOUC prevention — reads cookie or system preference, applies .dark before first paint */}
+    <script is:inline>
+      (function () {
+        var m = document.cookie.match(/(?:^|; )theme=(light|dark)/);
+        var t = m ? m[1] : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (t === 'dark') document.documentElement.classList.add('dark');
+      })();
+    </script>
   </head>
   <body class="min-h-screen bg-(--color-background) text-(--color-foreground) antialiased">
-    <Header siteName={siteName} items={navigation?.items ?? []} />
+    <Header siteName={siteName} items={navigation?.items ?? []}>
+      <ThemeToggle slot="actions" />
+    </Header>
 
     <main class="max-w-6xl mx-auto px-4 py-8">
       <slot />

@@ -1,1 +1,1 @@
-export { seoField } from './seo'
+export { seoField } from './seo';

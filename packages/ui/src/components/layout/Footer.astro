@@ -4,14 +4,11 @@ export interface Props {
   class?: string;
 }
 
-const { siteName, class: className = "" } = Astro.props;
+const { siteName, class: className = '' } = Astro.props;
 
-const classes = [
-  "border-t border-(--color-border) bg-(--color-background) mt-16",
-  className,
-]
+const _classes = ['border-t border-(--color-border) bg-(--color-background) mt-16', className]
   .filter(Boolean)
-  .join(" ");
+  .join(' ');
 ---
 
 <footer class={classes}>

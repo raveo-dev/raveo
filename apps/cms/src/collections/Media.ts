@@ -1,5 +1,5 @@
-import type { CollectionConfig } from 'payload'
-import { isAdmin, isAdminOrEditor } from '../access'
+import type { CollectionConfig } from 'payload';
+import { isAdmin, isAdminOrEditor } from '../access';
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -20,4 +20,4 @@ export const Media: CollectionConfig = {
     crop: false,
     focalPoint: false,
   },
-}
+};
