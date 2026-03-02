@@ -15,7 +15,8 @@
     "format": "biome format --write .",
     "generate:types": "turbo generate:types",
     "typecheck": "turbo typecheck",
-    "postinstall": "lefthook install"
+    "postinstall": "lefthook install",
+    "setup": "node setup.mjs"
   },
   "engines": {
     "node": ">=20",
