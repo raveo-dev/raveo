@@ -13,8 +13,8 @@ const _html = renderLexical(content);
 const _classes = ['richtext', className].filter(Boolean).join(' ');
 ---
 
-{html ? (
-  <div class={classes} set:html={html} />
+{_html ? (
+  <div class={_classes} set:html={_html} />
 ) : (
   <slot />
 )}

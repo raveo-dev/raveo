@@ -1,4 +1,8 @@
 ---
+import { renderLexical } from '@raveo/ui/richtext';
+import CmsImage from '../components/CmsImage.astro';
+import Layout from '../layouts/Layout.astro';
+
 const { slug } = Astro.params;
 
 const page = Astro.locals.pages.find((p) => p.slug === slug) ?? null;
@@ -7,10 +11,10 @@ if (!page) {
   return Astro.redirect('/404');
 }
 
-const _hero = page.hero ?? null;
-const _seoTitle = page.seo?.title ?? page.title;
-const _seoDescription = page.seo?.description ?? '';
-const _noIndex = page.seo?.noIndex ?? false;
+const hero = page.hero ?? null;
+const seoTitle = page.seo?.title ?? page.title;
+const seoDescription = page.seo?.description ?? '';
+const noIndex = page.seo?.noIndex ?? false;
 ---
 
 <Layout title={seoTitle} description={seoDescription} noIndex={noIndex}>

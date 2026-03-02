@@ -1,5 +1,8 @@
 ---
 import '../styles/global.css';
+import ThemeToggle from '@raveo/ui/components/base/ThemeToggle.astro';
+import Footer from '@raveo/ui/components/layout/Footer.astro';
+import Header from '@raveo/ui/components/layout/Header.astro';
 
 interface Props {
   title: string;
@@ -12,9 +15,9 @@ interface Props {
 const { title, description, noIndex, schema, canonical } = Astro.props;
 const { navigation, siteSettings } = Astro.locals;
 
-const _siteName = siteSettings?.siteName ?? 'Raveo';
-const _siteDescription = description ?? siteSettings?.siteDescription ?? '';
-const _canonicalUrl = canonical ?? Astro.url.href;
+const siteName = siteSettings?.siteName ?? 'Raveo';
+const siteDescription = description ?? siteSettings?.siteDescription ?? '';
+const canonicalUrl = canonical ?? Astro.url.href;
 ---
 
 <!doctype html>

@@ -23,7 +23,7 @@ const _navItems = items.map((item) => ({
 }));
 ---
 
-<header class={classes}>
+<header class={_classes}>
   <nav class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
     <a
       href="/"
@@ -33,7 +33,7 @@ const _navItems = items.map((item) => ({
     </a>
 
     <ul class="flex gap-6 list-none m-0 p-0">
-      {navItems.map(({ label, href }) => (
+      {_navItems.map(({ label, href }) => (
         <li>
           <a
             href={href}

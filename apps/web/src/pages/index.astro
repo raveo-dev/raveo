@@ -1,16 +1,18 @@
 ---
 import { renderLexical } from '@raveo/ui/richtext';
+import CmsImage from '../components/CmsImage.astro';
+import Layout from '../layouts/Layout.astro';
 
 const homePage = Astro.locals.pages.find((p) => p.slug === 'home') ?? null;
-const _contentHtml = renderLexical(homePage?.content);
+const contentHtml = renderLexical(homePage?.content);
 const { siteSettings } = Astro.locals;
 
-const _hero = homePage?.hero ?? null;
-const _seoTitle = homePage?.seo?.title ?? homePage?.title ?? 'Raveo';
+const hero = homePage?.hero ?? null;
+const seoTitle = homePage?.seo?.title ?? homePage?.title ?? 'Raveo';
 const seoDescription = homePage?.seo?.description ?? '';
 const baseUrl = Astro.site?.toString().replace(/\/$/, '') ?? '';
 
-const _schema = {
+const schema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: siteSettings?.siteName ?? 'Raveo',

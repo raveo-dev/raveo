@@ -22,7 +22,7 @@ const {
 } = Astro.props;
 
 const coverClass = cover ? 'object-cover w-full h-full' : '';
-const _classes = [coverClass, className].filter(Boolean).join(' ') || undefined;
+const classes = [coverClass, className].filter(Boolean).join(' ') || undefined;
 ---
 
 <img
