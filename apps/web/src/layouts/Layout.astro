@@ -15,13 +15,13 @@ interface Props {
 const { title, description, noIndex, schema, canonical } = Astro.props;
 const { navigation, siteSettings } = Astro.locals;
 
-const siteName = siteSettings?.siteName ?? 'Raveo';
-const siteDescription = description ?? siteSettings?.siteDescription ?? '';
+const siteName = siteSettings?.siteName ?? 'Raveo - Default Site Name';
+const siteDescription = description ?? siteSettings?.siteDescription ?? 'Default site description for Raveo.';
 const canonicalUrl = canonical ?? Astro.url.href;
 ---
 
 <!doctype html>
-<html lang="cs">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
