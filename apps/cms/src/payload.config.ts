@@ -8,6 +8,8 @@ import { r2Storage } from '@payloadcms/storage-r2';
 import { buildConfig } from 'payload';
 import type { GetPlatformProxyOptions } from 'wrangler';
 import { Categories } from './collections/Categories';
+import { FormSubmissions } from './collections/FormSubmissions';
+import { Forms } from './collections/Forms';
 import { Media } from './collections/Media';
 import { Pages } from './collections/Pages';
 import { Posts } from './collections/Posts';
@@ -68,7 +70,7 @@ export default buildConfig({
     defaultLocale: 'en',
     fallback: true,
   },
-  collections: [Users, Media, Categories, Posts, Pages],
+  collections: [Users, Media, Categories, Posts, Pages, Forms, FormSubmissions],
   globals: [Navigation, SiteSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
